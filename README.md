@@ -1,0 +1,3 @@
+# Musiquely
+
+Micromanage your playlists
