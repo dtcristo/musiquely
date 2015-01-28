@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+
+  root 'pages#index'
+
+  get 'pages/index'
+  get 'pages/contact'
+  get 'pages/about'
+
+  get 'auth/spotify/callback', to: 'auth#spotify'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
