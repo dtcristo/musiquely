@@ -11,17 +11,7 @@
 <%= render 'layouts/header' %>
 
 <div class="container">
-  <% flash.each do |name, message| %>
-    <% if message.is_a?(String) %>
-      <div class="alert alert-<%= name == "notice" ? "success" : "danger" %> alert-dismissable" role="alert">
-        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <%= content_tag :div, message, id: "flash_#{name}" %>
-      </div>
-    <% end %>
-  <% end %>
-
   <%= yield %>
-
   <%= render 'layouts/footer' %>
 </div>
 

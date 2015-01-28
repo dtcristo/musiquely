@@ -31,7 +31,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 # Bootstrap for front-end
-gem 'bootstrap-sass', '~> 3.3.3'
+gem 'bootstrap-sass'
 
 # Figaro for hiding secrets in ENV
 gem 'figaro'
