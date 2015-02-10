@@ -35,7 +35,7 @@ gem 'thin'
 
 # Use HAML for templating
 gem 'haml'
-gem "haml-rails"
+gem 'haml-rails'
 
 # Bootstrap for front-end
 gem 'bootstrap-sass'
@@ -64,6 +64,9 @@ group :development, :test do
 
   # SQLite database for development and test only
   gem 'sqlite3'
+
+  # Use Pry REPL in console
+  gem 'pry-rails'
 end
 
 group :production do
