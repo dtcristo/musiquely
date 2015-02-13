@@ -30,12 +30,18 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Use Thin HTTP server
+gem 'thin'
+
 # Use HAML for templating
 gem 'haml'
-gem "haml-rails"
+gem 'haml-rails'
 
 # Bootstrap for front-end
 gem 'bootstrap-sass'
+
+# Bootstrap themes
+gem 'bootswatch-rails'
 
 # Figaro for hiding secrets in ENV
 gem 'figaro'
@@ -58,6 +64,9 @@ group :development, :test do
 
   # SQLite database for development and test only
   gem 'sqlite3'
+
+  # Use Pry REPL in console
+  gem 'pry-rails'
 end
 
 group :production do
