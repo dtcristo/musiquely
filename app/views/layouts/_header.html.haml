@@ -1,17 +1,19 @@
 %nav.navbar.navbar-default
   .container-fluid
     .navbar-header
-      %button.navbar-toggle.collapsed{"data-target" => "#navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+      %button.navbar-toggle.collapsed{'data-target' => '#navbar-collapse', 'data-toggle' => 'collapse', type: 'button'}
         %span.sr-only Toggle navigation
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      = link_to "Musiquely", root_path, class: "navbar-brand"
+      = link_to 'Musiquely', root_path, class: 'navbar-brand'
     #navbar-collapse.collapse.navbar-collapse
       %ul.nav.navbar-nav.navbar-left
-        %li= link_to "Blog", "http://blog.musiquely.com/"
-        %li= link_to "About", about_path
-        %li= link_to "Contact", contact_path
+        %li= link_to 'Blog', 'http://blog.musiquely.com/'
+        %li= link_to 'About', about_path
+        %li= link_to 'Contact', contact_path
       %ul.nav.navbar-nav.navbar-right
-        %li= link_to "Register", root_path
-        %li= link_to "Sign In", root_path
+        - if current_user
+          %li= link_to 'Log out', logout_path
+        - else
+          %li= link_to 'Sign in with Spotify', '/auth/spotify'

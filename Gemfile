@@ -45,6 +45,7 @@ gem 'bootstrap-sass'
 # Bootstrap themes
 gem 'bootswatch-rails'
 
+# Library of awesome icons
 gem 'font-awesome-rails'
 
 # Figaro for hiding secrets in ENV

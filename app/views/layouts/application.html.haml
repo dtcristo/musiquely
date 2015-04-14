@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}
     %title Musiquely
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
@@ -9,5 +9,10 @@
   %body
     = render 'layouts/header'
     .container
+      - flash.each do |name, msg|
+        .alert.alert-info.alert-dismissible{role: 'alert'}
+          %button.close{type: 'button', 'data-dismiss' => 'alert', 'aria-label' => 'Close'}
+            %span{'aria-hidden' => 'true'} &times;
+          = msg
       = yield
       = render 'layouts/footer'
