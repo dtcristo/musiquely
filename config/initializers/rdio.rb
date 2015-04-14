@@ -1,1 +1,1 @@
-# Add Rdio initilization here
+# Authenticate with Rdio
