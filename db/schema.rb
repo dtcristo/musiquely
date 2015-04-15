@@ -28,10 +28,13 @@ ActiveRecord::Schema.define(version: 20150414113532) do
 
   create_table "users", force: :cascade do |t|
     t.string   "spotify_id"
+    t.text     "spotify_auth"
     t.string   "name"
     t.string   "email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
+
+  add_index "users", ["spotify_id"], name: "index_users_on_spotify_id"
 
 end
