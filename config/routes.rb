@@ -1,12 +1,17 @@
 Rails.application.routes.draw do
 
+  # Pages
   root 'pages#index'
-
   get 'about', to: 'pages#about'
   get 'contact', to: 'pages#contact'
 
-  get 'auth/spotify/callback', to: 'sessions#create'
-  get 'logout', to: 'sessions#destroy', as: 'logout'
+  # Sessions
+  get 'session/new', to: 'sessions#new'
+  delete 'session', to: 'sessions#destroy'
+
+  # OmniAuth
+  get 'auth/:provider', to: ->(env){ [404, {}, ['Not Found']] }, as: 'auth'
+  get 'auth/:provider/callback', to: 'sessions#create', as: 'auth_callback'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

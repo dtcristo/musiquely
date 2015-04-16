@@ -1,17 +1,10 @@
 class SessionsController < ApplicationController
+  def new
+    redirect_to auth_path('spotify')
+  end
+
   def create
-    auth = request.env['omniauth.auth']
-
-    # Get or create the user
-    user = User.find_by_spotify_id(auth['info']['id'])
-    if (user)
-      # Persist the user's latest Spotify auth data
-      user.spotify_auth = auth
-      user.save
-    else
-      user = User.create_with_omniauth(auth)
-    end
-
+    user = User.find_or_create_by_auth(request.env['omniauth.auth'])
     session[:user_id] = user.id
     redirect_to root_url, notice: 'Signed in!'
   end
