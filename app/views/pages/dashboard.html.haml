@@ -1,0 +1,5 @@
+%h1 Dashboard
+- if current_user
+  %p= "Welcome #{current_user.name}!"
+- else
+  %p Error, not logged in
