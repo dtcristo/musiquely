@@ -6,13 +6,10 @@ Rails.application.routes.draw do
   get 'contact', to: 'pages#contact'
   get 'dashboard', to: 'pages#dashboard'
 
-  # Sessions
-  get 'session/new', to: 'sessions#new'
-  delete 'session', to: 'sessions#destroy'
-
-  # OmniAuth
+  # Sessions and OmniAuth
   get 'auth/:provider', to: ->(env){ [404, {}, ['Not Found']] }, as: 'auth'
   get 'auth/:provider/callback', to: 'sessions#create', as: 'auth_callback'
+  get 'logout', to: 'sessions#destroy'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
