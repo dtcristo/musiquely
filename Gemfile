@@ -35,6 +35,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Puma HTTP server
 gem 'puma'
 
+# Use Sidekiq for background jobs
+gem 'sidekiq'
+
 # Use HAML for templating
 gem 'haml'
 gem 'haml-rails'
