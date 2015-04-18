@@ -32,8 +32,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# Use Thin HTTP server
-gem 'thin'
+# Use Puma HTTP server
+gem 'puma'
 
 # Use HAML for templating
 gem 'haml'
