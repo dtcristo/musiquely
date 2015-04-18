@@ -1,7 +1,3 @@
 # Spotify secrets
 SPOTIFY_CLIENT_ID: key_here
 SPOTIFY_CLIENT_SECRET: key_here
-
-# Rdio secrets
-RDIO_KEY: key_here
-RDIO_SECRET: key_here
