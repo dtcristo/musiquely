@@ -14,17 +14,25 @@
 ActiveRecord::Schema.define(version: 20150414113532) do
 
   create_table "playlists", force: :cascade do |t|
+    t.string   "spotify_id"
+    t.integer  "user_id"
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_index "playlists", ["spotify_id"], name: "index_playlists_on_spotify_id"
+  add_index "playlists", ["user_id"], name: "index_playlists_on_user_id"
+
   create_table "tracks", force: :cascade do |t|
+    t.string   "spotify_id"
     t.string   "name"
     t.string   "artist"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "tracks", ["spotify_id"], name: "index_tracks_on_spotify_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "spotify_id"
