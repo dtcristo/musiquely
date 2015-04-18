@@ -15,6 +15,6 @@
       %ul.nav.navbar-nav.navbar-right
         - if current_user
           %li= link_to 'Dashboard', dashboard_path
-          %li= link_to 'Log out', session_path, method: :delete
+          %li= link_to 'Log out', logout_path
         - else
-          %li= link_to 'Sign in with Spotify', session_new_path
+          %li= link_to 'Sign in with Spotify', auth_path('spotify')
