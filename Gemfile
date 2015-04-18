@@ -57,9 +57,6 @@ gem 'figaro'
 # Spotify Web API
 gem 'rspotify'
 
-# Rdio Web Service API
-gem 'rdio'
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
