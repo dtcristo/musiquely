@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
   serialize :spotify_auth
-
   has_many :playlists
 
   def self.find_or_create_by_auth(auth)
