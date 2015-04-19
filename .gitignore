@@ -16,5 +16,5 @@
 !/log/.keep
 /tmp
 
-# Ignore application configuration
+# Ignore Figaro ENV configuration
 /config/application.yml
