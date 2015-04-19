@@ -1,5 +1,7 @@
 class Playlist < ActiveRecord::Base
-  has_and_belongs_to_many :users
+  has_many :user_playlists
+  has_many :users, through: :user_playlists
+  has_many :entries
   has_many :tracks, through: :entries
 
   def self.update_or_create_from_spotify(spotify_playlist, user)
