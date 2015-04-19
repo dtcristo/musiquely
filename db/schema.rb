@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150419023801) do
+ActiveRecord::Schema.define(version: 20150419111329) do
 
   create_table "entries", force: :cascade do |t|
     t.integer  "playlist_id"
@@ -32,14 +32,6 @@ ActiveRecord::Schema.define(version: 20150419023801) do
 
   add_index "playlists", ["spotify_id"], name: "index_playlists_on_spotify_id"
 
-  create_table "playlists_users", id: false, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "playlist_id"
-  end
-
-  add_index "playlists_users", ["playlist_id"], name: "index_playlists_users_on_playlist_id"
-  add_index "playlists_users", ["user_id"], name: "index_playlists_users_on_user_id"
-
   create_table "tracks", force: :cascade do |t|
     t.string   "spotify_id"
     t.string   "name"
@@ -49,6 +41,16 @@ ActiveRecord::Schema.define(version: 20150419023801) do
   end
 
   add_index "tracks", ["spotify_id"], name: "index_tracks_on_spotify_id"
+
+  create_table "user_playlists", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "playlist_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "user_playlists", ["playlist_id"], name: "index_user_playlists_on_playlist_id"
+  add_index "user_playlists", ["user_id"], name: "index_user_playlists_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "spotify_id"
