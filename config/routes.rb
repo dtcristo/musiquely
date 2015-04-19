@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   get 'auth/:provider/callback', to: 'sessions#create', as: 'auth_callback'
   get 'logout', to: 'sessions#destroy'
 
+  # Playlists
+  get 'playlists', to: 'playlists#index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
