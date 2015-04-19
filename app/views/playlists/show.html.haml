@@ -1,2 +1,5 @@
 %h1= @playlist.name
 = link_to 'Back to Playlists', playlists_path
+%ul
+  - @tracks.each do |track|
+    %li= "#{track.artist} - #{track.name}"
