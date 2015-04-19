@@ -1,15 +1,23 @@
 class PlaylistsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_playlist, only: :show
+  before_action :set_playlist, only: [:show, :refresh]
 
   def index
     @playlists = current_user.playlists
   end
 
+  def refresh_index
+    SpotifyPlaylistsJob.perform_later(current_user)
+    redirect_to playlists_path, notice: "Your playlist index is being reloaded"
+  end
+
   def show
-    playlist = Playlist.find_by_spotify_id(params[:spotify_id])
-    #perform(playlist)
     @tracks = Track.all #.references(:playlists_tracks).where(playlist: playlist)
+  end
+
+  def refresh
+    SpotifyTracksJob.perform_later(@playlist)
+    redirect_to playlists_path, notice: "\"#{@playlist.name}\" is being reloaded"
   end
 
   private
