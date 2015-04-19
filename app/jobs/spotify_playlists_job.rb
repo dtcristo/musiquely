@@ -7,7 +7,7 @@ class SpotifyPlaylistsJob < ActiveJob::Base
     spotify_playlists = get_playlists(user.spotify_user)
     # Update or create the Playlist records
     spotify_playlists.each do |spotify_playlist|
-      Playlist.update_or_create_from_spotify(spotify_playlist, user.id)
+      Playlist.update_or_create_from_spotify(spotify_playlist, user)
     end
   end
 
@@ -17,7 +17,7 @@ class SpotifyPlaylistsJob < ActiveJob::Base
     offset = 0
     loop do
       current_playlists = spotify_user.playlists(limit: 50, offset: offset)
-      spotify_playlists.concat current_playlists
+      spotify_playlists.concat(current_playlists)
       # Debug: print progress
       puts "spotify_playlists.count = " + spotify_playlists.count.to_s
       # Stop if we got less than 50

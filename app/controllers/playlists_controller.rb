@@ -7,6 +7,9 @@ class PlaylistsController < ApplicationController
   end
 
   def show
+    playlist = Playlist.find_by_spotify_id(params[:spotify_id])
+    #perform(playlist)
+    @tracks = Track.all #.references(:playlists_tracks).where(playlist: playlist)
   end
 
   private

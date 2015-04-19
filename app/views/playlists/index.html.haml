@@ -1,4 +1,4 @@
 %h1 Playlists
 %ul
-- @playlists.each do |playlist|
-  %li= link_to playlist.name, playlist_path(playlist.spotify_id)
+  - @playlists.each do |playlist|
+    %li= link_to playlist.name, playlist_path(playlist.spotify_id)
