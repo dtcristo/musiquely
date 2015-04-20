@@ -35,6 +35,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Puma HTTP server
 gem 'puma'
 
+# Use Redis for session-store
+gem 'redis-rails'
+
 # Use Sidekiq for background jobs
 gem 'sidekiq'
 
