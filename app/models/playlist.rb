@@ -4,6 +4,8 @@ class Playlist < ActiveRecord::Base
   has_many :entries
   has_many :tracks, through: :entries
 
+  validates :spotify_id, presence: true, uniqueness: true
+
   def self.update_or_create_from_spotify(spotify_playlist, user)
     playlist = find_by_spotify_id(spotify_playlist.id)
     if (playlist)
