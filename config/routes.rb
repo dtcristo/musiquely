@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   # Playlists
   get 'playlists', to: 'playlists#index'
-  get 'playlists/refresh', to: 'playlists#refresh_index', as: 'playlists_refresh'
+  get 'playlists/refresh', to: 'playlists#refresh_index'
   get 'playlist/:spotify_id', to: 'playlists#show', as: 'playlist'
   get 'playlist/:spotify_id/refresh', to: 'playlists#refresh', as: 'playlist_refresh'
 
