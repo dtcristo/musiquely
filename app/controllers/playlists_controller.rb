@@ -12,7 +12,7 @@ class PlaylistsController < ApplicationController
   end
 
   def show
-    @tracks = Track.all #.references(:playlists_tracks).where(playlist: playlist)
+    @tracks = @playlist.tracks
   end
 
   def refresh
