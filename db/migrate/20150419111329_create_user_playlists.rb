@@ -6,5 +6,7 @@ class CreateUserPlaylists < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
+    add_index :user_playlists, [:user_id, :playlist_id], unique: true
   end
 end
