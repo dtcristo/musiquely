@@ -12,7 +12,7 @@ class PlaylistsController < ApplicationController
   end
 
   def show
-    @tracks = @playlist.tracks
+    @entries = Entry.includes(:track).where(playlist: @playlist)
   end
 
   def refresh
