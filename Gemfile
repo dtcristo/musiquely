@@ -44,6 +44,9 @@ gem 'sidekiq'
 # Enable ActiveRecord::Base#import
 gem 'activerecord-import'
 
+# Upsert for update (or insert) of records
+gem 'upsert'
+
 # Use HAML for templating
 gem 'haml'
 gem 'haml-rails'

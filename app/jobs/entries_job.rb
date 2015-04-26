@@ -1,12 +1,22 @@
-# Refresh the playlist's tracks from Spotify
-class SpotifyTracksJob < ActiveJob::Base
+# Refresh the Playlist's Entries from Spotify
+class EntriesJob < ActiveJob::Base
   queue_as :default
 
-  def perform(playlist)
+  def perform(user_playlist)
+    playlist = user_playlist.playlist
+    spotify_playlist = user_playlist.spotify_playlist
+
+    old_snapshot_id = playlist.snapshot_id
+    new_snapshot_id = spotify_playlist.snapshot_id
+
+    # Nothing to do if playlist hasn't changed
+    return if new_snapshot_id == old_snapshot_id
+
     # Build an array of Spotify tracks
-    spotify_tracks = get_tracks(playlist.spotify_playlist)
+    spotify_tracks = get_tracks(spotify_playlist)
     # Update or create the Entry records
     Entry.import_from_spotify(spotify_tracks, playlist)
+    playlist.update(snapshot_id: new_snapshot_id)
   end
 
   def get_tracks(spotify_playlist)
