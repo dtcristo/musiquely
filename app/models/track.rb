@@ -4,16 +4,15 @@ class Track < ActiveRecord::Base
 
   validates :spotify_id, presence: true, uniqueness: true
 
-  def self.update_or_create_from_spotify(spotify_track, playlist)
+  def self.update_or_create_from_spotify(spotify_track)
     track = find_by_spotify_id(spotify_track.id)
-    track = create_from_spotify(spotify_track, playlist) unless track
+    track = create_from_spotify(spotify_track) unless track
     return track
   end
 
-  def self.create_from_spotify(spotify_track, playlist)
+  def self.create_from_spotify(spotify_track)
     create! do |track|
       track.spotify_id = spotify_track.id
-      track.playlists << playlist
       track.name = spotify_track.name
       track.artist = spotify_track.artists.first.name
     end

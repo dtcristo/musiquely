@@ -3,6 +3,7 @@ class CreateEntries < ActiveRecord::Migration
     create_table :entries do |t|
       t.belongs_to :playlist, index: true
       t.belongs_to :track, index: true
+      t.integer :position
 
       t.timestamps null: false
     end

@@ -5,10 +5,8 @@ class SpotifyTracksJob < ActiveJob::Base
   def perform(playlist)
     # Build an array of Spotify tracks
     spotify_tracks = get_tracks(playlist.spotify_playlist)
-    # Update or create the Track records
-    spotify_tracks.each do |spotify_track|
-      Track.update_or_create_from_spotify(spotify_track, playlist)
-    end
+    # Update or create the Entry records
+    Entry.import_from_spotify(spotify_tracks, playlist)
   end
 
   def get_tracks(spotify_playlist)
