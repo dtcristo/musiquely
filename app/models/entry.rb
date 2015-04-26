@@ -2,8 +2,10 @@ class Entry < ActiveRecord::Base
   belongs_to :playlist
   belongs_to :track
 
+  validates :playlist_id, :track_id, presence: true
+
   def self.import_from_spotify(spotify_tracks, playlist)
-    # Build values of each entry
+    # Build values of each Entry
     values = []
     position = 0
 
@@ -12,7 +14,7 @@ class Entry < ActiveRecord::Base
       values << [playlist.id, track.id, position += 1]
     end
 
-    # Delete all entries for this playlist
+    # Delete all Entries for this Playlist
     Entry.where(playlist: playlist).delete_all
 
     columns = [:playlist_id, :track_id, :position]

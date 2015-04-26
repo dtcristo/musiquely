@@ -26,9 +26,10 @@ ActiveRecord::Schema.define(version: 20150419111329) do
 
   create_table "playlists", force: :cascade do |t|
     t.string   "spotify_id"
+    t.string   "snapshot_id"
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   add_index "playlists", ["spotify_id"], name: "index_playlists_on_spotify_id", unique: true

@@ -1,14 +1,11 @@
-# Refresh the user's playlists from Spotify
-class SpotifyPlaylistsJob < ActiveJob::Base
+# Refresh the User's Playlists from Spotify
+class UserPlaylistsJob < ActiveJob::Base
   queue_as :default
 
   def perform(user)
     # Build an array of Spotify playlists
     spotify_playlists = get_playlists(user.spotify_user)
-    # Update or create the Playlist records
-    spotify_playlists.each do |spotify_playlist|
-      Playlist.update_or_create_from_spotify(spotify_playlist, user)
-    end
+    UserPlaylist.upsert_from_spotify(spotify_playlists, user)
   end
 
   def get_playlists(spotify_user)
