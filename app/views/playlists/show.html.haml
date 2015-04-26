@@ -1,5 +1,12 @@
 %h1= @playlist.name
-= link_to 'Back to Playlists', playlists_path
-%ul
+%p= link_to 'Back to Playlists', playlists_path
+%table.table.table-striped
+  %tr
+    %th #
+    %th Track
+    %th Artist
   - @entries.each do |entry|
-    %li= "#{entry.track.artist} - #{entry.track.name}"
+    %tr
+      %td= entry.position
+      %td= entry.track.name
+      %td= entry.track.artist

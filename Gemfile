@@ -41,6 +41,9 @@ gem 'redis-rails'
 # Use Sidekiq for background jobs
 gem 'sidekiq'
 
+# Enable ActiveRecord::Base#import
+gem 'activerecord-import'
+
 # Use HAML for templating
 gem 'haml'
 gem 'haml-rails'

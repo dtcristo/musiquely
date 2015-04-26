@@ -12,7 +12,7 @@ class PlaylistsController < ApplicationController
   end
 
   def show
-    @entries = Entry.includes(:track).where(playlist: @playlist)
+    @entries = Entry.includes(:track).order(position: :asc).where(playlist: @playlist)
   end
 
   def refresh

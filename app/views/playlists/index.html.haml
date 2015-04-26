@@ -1,8 +1,10 @@
 %h1 Playlists
-= link_to 'Refresh', playlists_refresh_path
-%ul
+%p
+  = link_to 'Back to Dashboard', dashboard_path
+  |
+  = link_to 'Refresh', playlists_refresh_path
+%table.table.table-striped
   - @playlists.each do |playlist|
-    %li
-      = link_to playlist.name, playlist_path(playlist.spotify_id)
-      %ul
-        %li= link_to 'Refresh', playlist_refresh_path(playlist.spotify_id)
+    %tr
+      %td= link_to playlist.name, playlist_path(playlist.spotify_id)
+      %td= link_to 'Refresh', playlist_refresh_path(playlist.spotify_id)
