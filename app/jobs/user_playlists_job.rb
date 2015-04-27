@@ -5,7 +5,7 @@ class UserPlaylistsJob < ActiveJob::Base
   def perform(user)
     # Build an array of Spotify playlists
     spotify_playlists = get_playlists(user.spotify_user)
-    UserPlaylist.upsert_from_spotify(spotify_playlists, user)
+    upsert_from_spotify(spotify_playlists, user)
   end
 
   def get_playlists(spotify_user)
@@ -22,5 +22,37 @@ class UserPlaylistsJob < ActiveJob::Base
       offset += 50
     end
     return spotify_playlists
+  end
+
+  def upsert_from_spotify(spotify_playlists, user)
+    # Build a hash of the Spotify playlists and their ordering
+    spotify_playlists_hash = {}
+    position = 0
+
+    spotify_playlists.each do |spotify_playlist|
+      spotify_playlists_hash[spotify_playlist.id] = [spotify_playlist, position += 1]
+    end
+
+    Upsert.batch(Playlist.connection, :playlists) do |upsert|
+      spotify_playlists.each do |spotify_playlist|
+        timestamp = UpsertHelper.timestamp
+        upsert.row({ spotify_id: spotify_playlist.id }, name: spotify_playlist.name,
+          created_at: timestamp, updated_at: timestamp)
+      end
+    end
+
+    # Pluck the ids of the Playlists we just upserted
+    ids = Playlist.where(spotify_id: spotify_playlists_hash.keys).pluck(:id, :spotify_id)
+
+    Upsert.batch(UserPlaylist.connection, :user_playlists) do |upsert|
+      ids.each do |id_pair|
+        timestamp = UpsertHelper.timestamp
+        upsert.row({ user_id: user.id, playlist_id: id_pair[0] },
+          position: spotify_playlists_hash[id_pair[1]][1], created_at: timestamp, updated_at: timestamp)
+      end
+    end
+
+    # Delete any UserPlaylists that were nor returned from spotify
+    UserPlaylist.where(user: user).where.not(playlist_id: ids.transpose[0]).delete_all
   end
 end
