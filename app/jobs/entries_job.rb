@@ -27,7 +27,7 @@ class EntriesJob < ActiveJob::Base
       current_tracks = spotify_playlist.tracks(limit: 100, offset: offset)
       spotify_tracks.concat(current_tracks)
       # Debug: print progress
-      puts "spotify_tracks.count = " + spotify_tracks.count.to_s
+      puts 'spotify_tracks.count = ' + spotify_tracks.count.to_s
       # Stop if we got less than 100
       break if current_tracks.count < 100
       offset += 100
