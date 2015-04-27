@@ -15,7 +15,7 @@ class EntriesJob < ActiveJob::Base
     # Build an array of Spotify tracks
     spotify_tracks = get_tracks(spotify_playlist)
     # Update or create the Entry records
-    Entry.import_from_spotify(spotify_tracks, playlist)
+    import_from_spotify(spotify_tracks, playlist)
     playlist.update(snapshot_id: new_snapshot_id)
   end
 
@@ -33,5 +33,22 @@ class EntriesJob < ActiveJob::Base
       offset += 100
     end
     return spotify_tracks
+  end
+
+  def import_from_spotify(spotify_tracks, playlist)
+    # Build values of each Entry
+    values = []
+    position = 0
+
+    spotify_tracks.each do |spotify_track|
+      track = Track.update_or_create_from_spotify(spotify_track)
+      values << [playlist.id, track.id, position += 1]
+    end
+
+    # Delete all Entries for this Playlist
+    Entry.where(playlist: playlist).delete_all
+
+    columns = [:playlist_id, :track_id, :position]
+    Entry.import(columns, values)
   end
 end
