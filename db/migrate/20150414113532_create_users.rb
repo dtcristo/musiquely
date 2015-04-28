@@ -1,8 +1,8 @@
 class CreateUsers < ActiveRecord::Migration
   def change
     create_table :users do |t|
-      t.string :spotify_id
-      t.text :spotify_auth
+      t.string :spotify_id, null: false
+      t.text :spotify_auth, null: false
       t.string :name
       t.string :email
 

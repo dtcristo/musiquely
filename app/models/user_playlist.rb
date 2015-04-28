@@ -4,7 +4,7 @@ class UserPlaylist < ActiveRecord::Base
   has_many :entries, through: :playlist
 
   validates :user_id, :playlist_id, presence: true
-  # The combination of [:playlist_id, :user_id] is unique
+  # The combination of user_id and playlist_id is unique
   validates :playlist_id, uniqueness: { scope: :user_id }
 
   def spotify_playlist
