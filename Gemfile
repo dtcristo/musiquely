@@ -41,9 +41,6 @@ gem 'redis-rails'
 # Use Sidekiq for background jobs
 gem 'sidekiq'
 
-# Enable ActiveRecord::Base#import
-gem 'activerecord-import'
-
 # Upsert for update (or insert) of records
 gem 'upsert'
 
