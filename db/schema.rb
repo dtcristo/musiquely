@@ -14,8 +14,8 @@
 ActiveRecord::Schema.define(version: 20150419111329) do
 
   create_table "entries", force: :cascade do |t|
-    t.integer  "playlist_id"
-    t.integer  "track_id"
+    t.integer  "playlist_id", null: false
+    t.integer  "track_id",    null: false
     t.integer  "position"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -25,9 +25,10 @@ ActiveRecord::Schema.define(version: 20150419111329) do
   add_index "entries", ["track_id"], name: "index_entries_on_track_id"
 
   create_table "playlists", force: :cascade do |t|
-    t.string   "spotify_id"
+    t.string   "spotify_id",  null: false
     t.string   "snapshot_id"
     t.string   "name"
+    t.datetime "loaded_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
@@ -35,7 +36,7 @@ ActiveRecord::Schema.define(version: 20150419111329) do
   add_index "playlists", ["spotify_id"], name: "index_playlists_on_spotify_id", unique: true
 
   create_table "tracks", force: :cascade do |t|
-    t.string   "spotify_id"
+    t.string   "spotify_id", null: false
     t.string   "name"
     t.string   "artist"
     t.datetime "created_at", null: false
@@ -45,8 +46,9 @@ ActiveRecord::Schema.define(version: 20150419111329) do
   add_index "tracks", ["spotify_id"], name: "index_tracks_on_spotify_id", unique: true
 
   create_table "user_playlists", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "playlist_id"
+    t.integer  "user_id",     null: false
+    t.integer  "playlist_id", null: false
+    t.integer  "position"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
@@ -56,8 +58,8 @@ ActiveRecord::Schema.define(version: 20150419111329) do
   add_index "user_playlists", ["user_id"], name: "index_user_playlists_on_user_id"
 
   create_table "users", force: :cascade do |t|
-    t.string   "spotify_id"
-    t.text     "spotify_auth"
+    t.string   "spotify_id",   null: false
+    t.text     "spotify_auth", null: false
     t.string   "name"
     t.string   "email"
     t.datetime "created_at",   null: false

@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   serialize :spotify_auth
 
   validates :spotify_id, presence: true, uniqueness: true
+  validates :spotify_auth, presence: true
 
   def self.find_or_create_by_auth(auth)
     user = find_by_spotify_id(auth['info']['id'])
