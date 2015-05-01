@@ -3,12 +3,12 @@ class UserPlaylistsJob < ActiveJob::Base
   queue_as :default
 
   def perform(user)
-    # Build an array of Spotify playlists
-    spotify_playlists = get_playlists(user.spotify_user)
-    upsert_from_spotify(spotify_playlists, user)
+    spotify_playlists = get_spotify_playlists(user.spotify_user)
+    upsert_spotify_playlists_for_user(spotify_playlists, user)
   end
 
-  def get_playlists(spotify_user)
+  def get_spotify_playlists(spotify_user)
+    # Build an array of Spotify playlists
     spotify_playlists = []
     # Get all of the user's playlists, 50 at a time
     offset = 0
@@ -21,18 +21,18 @@ class UserPlaylistsJob < ActiveJob::Base
       break if current_playlists.count < 50
       offset += 50
     end
-    return spotify_playlists
+    spotify_playlists
   end
 
-  def upsert_from_spotify(spotify_playlists, user)
+  def upsert_spotify_playlists_for_user(spotify_playlists, user)
     # Build a hash of the Spotify playlists and their ordering
     spotify_playlists_hash = {}
     position = 0
-
     spotify_playlists.each do |spotify_playlist|
       spotify_playlists_hash[spotify_playlist.id] = [spotify_playlist, position += 1]
     end
 
+    # Update or insert Playlists from Spotify
     Upsert.batch(Playlist.connection, :playlists) do |upsert|
       spotify_playlists.each do |spotify_playlist|
         timestamp = UpsertHelper.timestamp
@@ -44,6 +44,7 @@ class UserPlaylistsJob < ActiveJob::Base
     # Pluck the ids of the Playlists we just upserted
     ids = Playlist.where(spotify_id: spotify_playlists_hash.keys).pluck(:id, :spotify_id)
 
+    # Update or insert UserPlaylists for each of the Playlists
     Upsert.batch(UserPlaylist.connection, :user_playlists) do |upsert|
       ids.each do |id_pair|
         timestamp = UpsertHelper.timestamp
@@ -52,7 +53,7 @@ class UserPlaylistsJob < ActiveJob::Base
       end
     end
 
-    # Delete any UserPlaylists that were nor returned from spotify
+    # Delete all other UserPlaylists
     UserPlaylist.where(user: user).where.not(playlist_id: ids.transpose[0]).delete_all
   end
 end
