@@ -12,6 +12,7 @@ class PlaylistsController < ApplicationController
   end
 
   def show
+    EntriesJob.new.perform(@user_playlist)
     @entries = Entry.includes(:track).order(position: :asc).where(playlist: @playlist)
   end
 

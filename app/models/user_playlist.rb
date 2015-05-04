@@ -3,9 +3,11 @@ class UserPlaylist < ActiveRecord::Base
   belongs_to :playlist
   has_many :entries, through: :playlist
 
-  validates :user_id, :playlist_id, presence: true
-  # The combination of user_id and playlist_id is unique
+  validates :user_id, :playlist_id, :position, presence: true
+  # A playlist is unique for a given User
   validates :playlist_id, uniqueness: { scope: :user_id }
+  # The positions are unique for a given User
+  validates :position, uniqueness: { scope: :user_id }
 
   def spotify_playlist
     RSpotify::Playlist.find(user.spotify_user.id, playlist.spotify_id)
