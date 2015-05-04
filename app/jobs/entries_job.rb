@@ -73,6 +73,6 @@ class EntriesJob < ActiveJob::Base
     end
 
     # Delete all other Entries for the Playlist
-    #Entry.where(playlist: playlist).where.not(track_id: ids.transpose[0]).delete_all
+    Entry.where(playlist: playlist).where.not(position: (1..spotify_tracks.count).to_a).delete_all
   end
 end
