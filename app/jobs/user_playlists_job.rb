@@ -26,10 +26,10 @@ class UserPlaylistsJob < ActiveJob::Base
 
   def upsert_spotify_playlists_for_user(spotify_playlists, user)
     # Build a hash of the Spotify playlists and their ordering
-    spotify_playlists_hash = {}
+    spotify_playlists_h = {}
     position = 0
     spotify_playlists.each do |spotify_playlist|
-      spotify_playlists_hash[spotify_playlist.id] = [spotify_playlist, position += 1]
+      spotify_playlists_h[spotify_playlist.id] = [spotify_playlist, position += 1]
     end
 
     # Update or insert Playlists from Spotify
@@ -42,14 +42,15 @@ class UserPlaylistsJob < ActiveJob::Base
     end
 
     # Pluck the ids of the Playlists we just upserted
-    ids = Playlist.where(spotify_id: spotify_playlists_hash.keys).pluck(:id, :spotify_id)
+    ids = Playlist.where(spotify_id: spotify_playlists_h.keys).pluck(:id, :spotify_id)
 
     # Update or insert UserPlaylists for each of the Playlists
     Upsert.batch(UserPlaylist.connection, :user_playlists) do |upsert|
       ids.each do |id_pair|
         timestamp = UpsertHelper.timestamp
         upsert.row({ user_id: user.id, playlist_id: id_pair[0] },
-          position: spotify_playlists_hash[id_pair[1]][1], created_at: timestamp, updated_at: timestamp)
+          position: spotify_playlists_h[id_pair[1]][1],
+          created_at: timestamp, updated_at: timestamp)
       end
     end
 
