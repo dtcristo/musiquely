@@ -23,10 +23,8 @@ class PlaylistsController < ApplicationController
   private
 
   def set_user_playlist
-    # TODO: Fix this query
-    #@playlist = Playlist.find_by_spotify_id(params[:spotify_id])
-    #@user_playlist = UserPlaylist.find(user: current_user, playlist: @playlist)
-    @user_playlist = UserPlaylist.joins(:playlist).where(playlists: { spotify_id: params[:spotify_id] }).take
+    @user_playlist = UserPlaylist.includes(:playlist).find_by(user: current_user,
+      playlists: { spotify_id: params[:spotify_id] })
     @playlist = @user_playlist.playlist
   end
 
