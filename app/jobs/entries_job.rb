@@ -12,14 +12,15 @@ class EntriesJob < ActiveJob::Base
     # Nothing to do if playlist hasn't changed
     return if new_snapshot_id == old_snapshot_id
 
-    # Build an array of Spotify tracks
-    spotify_tracks = get_tracks(spotify_playlist)
+    spotify_tracks = get_spotify_tracks(spotify_playlist)
+
     # Update or create the Entry records
-    import_from_spotify(spotify_tracks, playlist)
+    upsert_spotify_tracks_for_playlist(spotify_tracks, playlist)
     playlist.update(snapshot_id: new_snapshot_id)
   end
 
-  def get_tracks(spotify_playlist)
+  def get_spotify_tracks(spotify_playlist)
+    # Build an array of Spotify tracks
     spotify_tracks = []
     # Get all of the playlist's tracks, 100 at a time
     offset = 0
@@ -35,20 +36,43 @@ class EntriesJob < ActiveJob::Base
     return spotify_tracks
   end
 
-  def import_from_spotify(spotify_tracks, playlist)
-    # Build values of each Entry
-    values = []
-    position = 0
-
+  def upsert_spotify_tracks_for_playlist(spotify_tracks, playlist)
+    # Build a hash of the Spotify tracks, later we add the track_id from our DB
+    spotify_tracks_h = {}
     spotify_tracks.each do |spotify_track|
-      track = Track.update_or_create_from_spotify(spotify_track)
-      values << [playlist.id, track.id, position += 1]
+      spotify_tracks_h[spotify_track.id] = { spotify_track: spotify_track }
     end
 
-    # Delete all Entries for this Playlist
-    Entry.where(playlist: playlist).delete_all
+    # Update or insert Tracks from Spotify
+    Upsert.batch(Track.connection, :tracks) do |upsert|
+      spotify_tracks.each do |spotify_track|
+        timestamp = UpsertHelper.timestamp
+        upsert.row({ spotify_id: spotify_track.id },
+          name: spotify_track.name, artist: spotify_track.artists.first.name,
+          created_at: timestamp, updated_at: timestamp)
+      end
+    end
 
-    columns = [:playlist_id, :track_id, :position]
-    Entry.import(columns, values)
+    # Pluck the ids of the Tracks we just upserted
+    ids = Track.where(spotify_id: spotify_tracks_h.keys).pluck(:id, :spotify_id)
+
+    # Add track_ids to the Spotify tracks hash
+    ids.each do |id_pair|
+      spotify_tracks_h[id_pair[1]][:track_id] = id_pair[0]
+    end
+
+    position = 0
+    # Update or insert Entries for each position and Track in the Playlist
+    Upsert.batch(Entry.connection, :entries) do |upsert|
+      spotify_tracks.each do |spotify_track|
+        timestamp = UpsertHelper.timestamp
+        upsert.row({ playlist_id: playlist.id, position: position += 1 },
+          track_id: spotify_tracks_h[spotify_track.id][:track_id],
+          created_at: timestamp, updated_at: timestamp)
+      end
+    end
+
+    # Delete all other Entries for the Playlist
+    #Entry.where(playlist: playlist).where.not(track_id: ids.transpose[0]).delete_all
   end
 end

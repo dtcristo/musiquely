@@ -16,11 +16,12 @@ ActiveRecord::Schema.define(version: 20150419111329) do
   create_table "entries", force: :cascade do |t|
     t.integer  "playlist_id", null: false
     t.integer  "track_id",    null: false
-    t.integer  "position"
+    t.integer  "position",    null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
+  add_index "entries", ["playlist_id", "position"], name: "index_entries_on_playlist_id_and_position", unique: true
   add_index "entries", ["playlist_id"], name: "index_entries_on_playlist_id"
   add_index "entries", ["track_id"], name: "index_entries_on_track_id"
 
@@ -48,13 +49,14 @@ ActiveRecord::Schema.define(version: 20150419111329) do
   create_table "user_playlists", force: :cascade do |t|
     t.integer  "user_id",     null: false
     t.integer  "playlist_id", null: false
-    t.integer  "position"
+    t.integer  "position",    null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
   add_index "user_playlists", ["playlist_id"], name: "index_user_playlists_on_playlist_id"
   add_index "user_playlists", ["user_id", "playlist_id"], name: "index_user_playlists_on_user_id_and_playlist_id", unique: true
+  add_index "user_playlists", ["user_id", "position"], name: "index_user_playlists_on_user_id_and_position", unique: true
   add_index "user_playlists", ["user_id"], name: "index_user_playlists_on_user_id"
 
   create_table "users", force: :cascade do |t|
