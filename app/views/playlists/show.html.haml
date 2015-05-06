@@ -5,8 +5,12 @@
     %th #
     %th Track
     %th Artist
+    %th Preview
   - @entries.each do |entry|
     %tr
       %td= entry.position
       %td= entry.track.name
       %td= entry.track.artist
+      %td
+        %audio{controls: 'controls'}
+          %source{src: "#{entry.track.preview_url}", type: 'audio/mp3'}

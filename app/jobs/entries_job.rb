@@ -50,6 +50,7 @@ class EntriesJob < ActiveJob::Base
         timestamp = UpsertHelper.timestamp
         upsert.row({ spotify_id: spotify_track.id },
           name: spotify_track.name, artist: spotify_track.artists.first.name,
+          preview_url: spotify_track.preview_url,
           created_at: timestamp, updated_at: timestamp)
       end
     end

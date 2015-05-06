@@ -38,11 +38,12 @@ ActiveRecord::Schema.define(version: 20150419111329) do
   add_index "playlists", ["spotify_id"], name: "index_playlists_on_spotify_id", unique: true
 
   create_table "tracks", force: :cascade do |t|
-    t.string   "spotify_id", null: false
+    t.string   "spotify_id",  null: false
     t.string   "name"
     t.string   "artist"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "preview_url"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   add_index "tracks", ["spotify_id"], name: "index_tracks_on_spotify_id", unique: true
