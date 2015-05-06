@@ -36,7 +36,8 @@ class UserPlaylistsJob < ActiveJob::Base
     Upsert.batch(Playlist.connection, :playlists) do |upsert|
       spotify_playlists.each do |spotify_playlist|
         timestamp = UpsertHelper.timestamp
-        upsert.row({ spotify_id: spotify_playlist.id }, name: spotify_playlist.name,
+        upsert.row({ spotify_id: spotify_playlist.id },
+          name: spotify_playlist.name, owner_id: spotify_playlist.owner.id,
           created_at: timestamp, updated_at: timestamp)
       end
     end

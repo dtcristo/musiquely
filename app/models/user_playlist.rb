@@ -8,8 +8,4 @@ class UserPlaylist < ActiveRecord::Base
   validates :playlist_id, uniqueness: { scope: :user_id }
   # The positions are unique for a given User
   validates :position, uniqueness: { scope: :user_id }
-
-  def spotify_playlist
-    RSpotify::Playlist.find(user.spotify_user.id, playlist.spotify_id)
-  end
 end
