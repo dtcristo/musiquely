@@ -1,3 +1,5 @@
+require 'upsert/active_record_upsert'
+
 class User < ActiveRecord::Base
   has_many :user_playlists
   has_many :playlists, through: :user_playlists
@@ -8,26 +10,14 @@ class User < ActiveRecord::Base
   validates :spotify_id, presence: true, uniqueness: true
   validates :spotify_auth, presence: true
 
-  def self.find_or_create_by_auth(auth)
-    user = find_by_spotify_id(auth['info']['id'])
-    if (user)
-      # Update user auth data
-      user.spotify_auth = auth
-      user.save
-    else
-      user = create_by_auth(auth)
-    end
-    return user
-  end
-
-  def self.create_by_auth(auth)
+  def self.upsert_with_auth(auth)
     spotify_user = RSpotify::User.new(auth)
-    create! do |user|
-      user.spotify_id = spotify_user.id
-      user.spotify_auth = auth
-      user.name = spotify_user.display_name
-      user.email = spotify_user.email
-    end
+    timestamp = UpsertHelper.timestamp
+    User.upsert({spotify_id: spotify_user.id}, spotify_auth: auth.to_yaml,
+      name: spotify_user.display_name, email: spotify_user.email,
+      created_at: timestamp, updated_at: timestamp)
+    # Return the User
+    User.find_by(spotify_id: spotify_user.id)
   end
 
   def spotify_user
