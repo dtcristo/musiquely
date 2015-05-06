@@ -2,9 +2,8 @@
 class EntriesJob < ActiveJob::Base
   queue_as :default
 
-  def perform(user_playlist)
-    playlist = user_playlist.playlist
-    spotify_playlist = user_playlist.spotify_playlist
+  def perform(playlist)
+    spotify_playlist = playlist.spotify_playlist
 
     old_snapshot_id = playlist.snapshot_id
     new_snapshot_id = spotify_playlist.snapshot_id

@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20150419111329) do
     t.string   "spotify_id",  null: false
     t.string   "snapshot_id"
     t.string   "name"
+    t.string   "owner_id",    null: false
     t.datetime "loaded_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
