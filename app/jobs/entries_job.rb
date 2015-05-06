@@ -15,7 +15,9 @@ class EntriesJob < ActiveJob::Base
 
     # Update or create the Entry records
     upsert_spotify_tracks_for_playlist(spotify_tracks, playlist)
-    playlist.update(snapshot_id: new_snapshot_id)
+
+    # Save the new snapshot_id and set a loaded time
+    playlist.update(snapshot_id: new_snapshot_id, loaded_at: UpsertHelper.timestamp)
   end
 
   def get_spotify_tracks(spotify_playlist)
