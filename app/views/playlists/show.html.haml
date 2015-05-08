@@ -12,5 +12,6 @@
       %td= entry.track.name
       %td= entry.track.artist
       %td
-        %audio{controls: 'controls'}
-          %source{src: "#{entry.track.preview_url}", type: 'audio/mp3'}
+        - unless (entry.track.preview_url == '')
+          %audio{controls: true, preload: 'none'}
+            %source{src: "#{entry.track.preview_url}", type: 'audio/mpeg'}
