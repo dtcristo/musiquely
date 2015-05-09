@@ -4,7 +4,7 @@ class CreatePlaylists < ActiveRecord::Migration
       t.string :spotify_id, null: false
       t.string :snapshot_id
       t.string :name
-      t.string :owner_id, null: false
+      t.string :owner_id,   null: false
       t.datetime :loaded_at
 
       t.timestamps null: false
