@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150419111329) do
+ActiveRecord::Schema.define(version: 20150509021031) do
 
   create_table "entries", force: :cascade do |t|
     t.integer  "playlist_id", null: false
@@ -36,6 +36,20 @@ ActiveRecord::Schema.define(version: 20150419111329) do
   end
 
   add_index "playlists", ["spotify_id"], name: "index_playlists_on_spotify_id", unique: true
+
+  create_table "rules", force: :cascade do |t|
+    t.integer  "template_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "templates", force: :cascade do |t|
+    t.integer  "user_id",     null: false
+    t.integer  "playlist_id", null: false
+    t.string   "name",        null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "tracks", force: :cascade do |t|
     t.string   "spotify_id",  null: false
