@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
 
   # Pages
@@ -16,6 +18,10 @@ Rails.application.routes.draw do
   get 'playlists/refresh', to: 'playlists#refresh_index'
   get 'playlist/:spotify_id', to: 'playlists#show', as: 'playlist'
   get 'playlist/:spotify_id/refresh', to: 'playlists#refresh', as: 'playlist_refresh'
+
+  # Sidekiq monitoring console
+  # TODO: Restrict access to this route
+  mount Sidekiq::Web => '/sidekiq'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
