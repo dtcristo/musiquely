@@ -40,6 +40,9 @@ gem 'puma'
 # Use Redis for session-store
 gem 'redis-rails'
 
+# Use Sinatra for Sidekiq web console, require when needed
+gem 'sinatra', require: nil
+
 # Use Sidekiq for background jobs
 gem 'sidekiq'
 
