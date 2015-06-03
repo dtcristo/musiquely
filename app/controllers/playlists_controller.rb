@@ -7,17 +7,17 @@ class PlaylistsController < ApplicationController
   end
 
   def refresh_index
-    UserPlaylistsJob.new.perform(current_user)
+    UserPlaylistsJob.perform_now(current_user)
     redirect_to playlists_path, notice: "Your playlist index is being reloaded"
   end
 
   def show
-    EntriesJob.new.perform(@playlist)
+    EntriesJob.perform_now(@playlist)
     @entries = Entry.includes(:track).order(position: :asc).where(playlist: @playlist)
   end
 
   def refresh
-    EntriesJob.new.perform(@playlist)
+    EntriesJob.perform_now(@playlist)
     redirect_to playlists_path, notice: "\"#{@playlist.name}\" is being reloaded"
   end
 
