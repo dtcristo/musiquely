@@ -46,9 +46,6 @@ gem 'sinatra', require: nil
 # Use Sidekiq for background jobs
 gem 'sidekiq'
 
-# Upsert for update (or insert) of records
-gem 'upsert'
-
 # Use HAML for templating
 gem 'haml'
 gem 'haml-rails'
@@ -64,9 +61,6 @@ gem 'font-awesome-rails'
 
 # Figaro for hiding secrets in ENV
 gem 'figaro'
-
-# Spotify Web API
-gem 'rspotify'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

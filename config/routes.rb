@@ -6,18 +6,6 @@ Rails.application.routes.draw do
   root 'pages#index'
   get 'about', to: 'pages#about'
   get 'contact', to: 'pages#contact'
-  get 'dashboard', to: 'pages#dashboard'
-
-  # Sessions and OmniAuth
-  get 'auth/:provider', to: ->(env){ [404, {}, ['Not Found']] }, as: 'auth'
-  get 'auth/:provider/callback', to: 'sessions#create', as: 'auth_callback'
-  get 'logout', to: 'sessions#destroy'
-
-  # Playlists
-  get 'playlists', to: 'playlists#index'
-  get 'playlists/refresh', to: 'playlists#refresh_index'
-  get 'playlist/:spotify_id', to: 'playlists#show', as: 'playlist'
-  get 'playlist/:spotify_id/refresh', to: 'playlists#refresh', as: 'playlist_refresh'
 
   # Sidekiq monitoring console
   # TODO: Restrict access to this route

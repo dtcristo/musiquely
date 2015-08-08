@@ -14,6 +14,7 @@
       %ul.nav.navbar-nav.navbar-right
         - if current_user
           %li= link_to 'Dashboard', dashboard_path
-          %li= link_to 'Log out', logout_path
+          %li= link_to 'Log out', '#'
         - else
-          %li= link_to 'Sign in with Spotify', auth_path('spotify')
+          %li= link_to 'Register', '#'
+          %li= link_to 'Sign in', '#'
